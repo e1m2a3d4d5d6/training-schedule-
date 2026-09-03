@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شاشة التدريبات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-950:#1a352d;
+    --navy-900:#25493d;
+    --paper:#f5f6f5;
+    --card:#ffffff;
+    --line:rgba(25,40,34,0.09);
+    --line-strong:rgba(25,40,34,0.16);
+    --ink:#1c2622;
+    --ink-muted:#5f6b64;
+    --ink-faint:#96a19a;
+
+    --gold:#3c6a59;
+    --gold-line:#3c6a59;
+    --gold-soft:#e7f0eb;
+    --burgundy:#736f64;
+    --burgundy-soft:#eeede9;
+    --emerald:#6b9484;
+    --emerald-soft:#eaf3ee;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Tajawal',sans-serif;
+    min-height:100vh;
+    font-variant-numeric:tabular-nums;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:'Cairo',sans-serif;}
+  ::selection{background:var(--gold-soft);color:var(--ink);}
+
+  /* ---------- Hero letterhead ---------- */
+  .hero{
+    background:
+      radial-gradient(900px 360px at 12% 0%, rgba(107,148,132,0.14), transparent 60%),
+      radial-gradient(800px 340px at 100% 0%, rgba(115,111,100,0.12), transparent 55%),
+      linear-gradient(180deg,var(--navy-900),var(--navy-950));
+    color:#eef1f5;
+    padding:34px 32px 26px;
+    position:relative;
+  }
+  .hero-inner{max-width:1280px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  .hero-brand{display:flex;align-items:center;gap:14px;}
+  .hero-mark{
+    width:46px;height:46px;border-radius:11px;
+    background:linear-gradient(155deg,#6b9484,var(--gold-line) 55%,#1f4234);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cairo';font-weight:900;color:#f4f6f5;font-size:18px;
+    box-shadow:0 6px 18px -6px rgba(60,106,89,0.5);
+  }
+  .hero-eyebrow{font-size:11.5px;letter-spacing:1.2px;color:#a9b6c8;font-weight:700;margin-bottom:4px;}
+  .hero-title{font-size:22px;font-weight:800;letter-spacing:.2px;}
+  .hero-sub{font-size:12.5px;color:#94a4b8;margin-top:3px;}
+
+  .hero-month{text-align:left;}
+  .hero-month .lbl{font-size:11px;color:#8fa0b5;letter-spacing:1px;margin-bottom:4px;}
+  .hero-month .val{font-family:'Cairo';font-weight:900;font-size:30px;line-height:1;}
+  .hero-month .val small{font-weight:600;font-size:15px;color:#a9b6c8;margin-inline-start:8px;}
+  .hero-rule{
+    max-width:1280px;margin:22px auto 0;
+    height:1px;background:linear-gradient(90deg,transparent,rgba(107,148,132,0.6) 15%,rgba(107,148,132,0.6) 85%,transparent);
+  }
+
+  /* ---------- Sticky control bar ---------- */
+  .toolbar{
+    position:sticky; top:0; z-index:20;
+    background:rgba(245,246,248,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-strong);
+    padding:14px 32px;
+  }
+  .toolbar-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+
+  .month-switch{display:flex;align-items:center;gap:10px;}
+  .month-switch button.nav{
+    width:32px;height:32px;border-radius:8px;border:1px solid var(--line-strong);
+    background:var(--card);color:var(--ink);cursor:pointer;font-size:15px;
+    display:flex;align-items:center;justify-content:center;transition:.15s;
+  }
+  .month-switch button.nav:hover{border-color:var(--gold-line);color:var(--gold);}
+  .month-switch .cur{font-family:'Cairo';font-weight:800;font-size:14.5px;min-width:120px;text-align:center;color:var(--ink);}
+
+  .view-tabs{display:flex;gap:4px;background:var(--card);padding:4px;border-radius:10px;border:1px solid var(--line-strong);}
+  .view-tabs button{
+    border:none;background:transparent;color:var(--ink-muted);
+    font-family:'Cairo';font-weight:700;font-size:13px;
+    padding:8px 16px;border-radius:7px;cursor:pointer;transition:.15s;
+  }
+  .view-tabs button.active{background:var(--navy-950);color:#fff;}
+
+  .admin-toggle{
+    width:32px;height:32px;border-radius:8px;border:1px solid var(--line-strong);
+    background:var(--card);color:var(--ink-muted);cursor:pointer;font-size:14px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .admin-toggle.on{color:var(--gold);border-color:var(--gold-line);background:var(--gold-soft);}
+
+  .gov-select{
+    background:var(--card);border:1px solid var(--line-strong);color:var(--ink);
+    font-family:'Tajawal';font-weight:700;font-size:12.5px;border-radius:8px;
+    padding:8px 10px;cursor:pointer;max-width:160px;
+  }
+  .gov-select:focus{outline:none;border-color:var(--gold-line);}
+
+  .today-btn{
+    border:1px solid var(--line-strong);background:var(--card);color:var(--ink-muted);
+    font-family:'Cairo';font-weight:700;font-size:12px;border-radius:8px;
+    padding:0 12px;height:32px;cursor:pointer;transition:.15s;
+  }
+  .today-btn:hover{border-color:var(--gold-line);color:var(--gold);}
+
+  .day-hero{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    margin-bottom:22px;
+  }
+  .day-hero .day-title{font-family:'Cairo';font-weight:800;font-size:18px;}
+  .day-hero .day-title small{display:block;font-weight:600;font-size:12px;color:var(--ink-muted);margin-top:2px;}
+
+  main{max-width:1280px;margin:0 auto;padding:28px 32px 60px;}
+
+  /* ---------- Month ribbon ---------- */
+  .ribbon-wrap{margin-bottom:28px;}
+  .ribbon-title{font-size:11.5px;color:var(--ink-faint);letter-spacing:.6px;font-weight:700;margin-bottom:10px;}
+  .ribbon{display:flex; gap:3px; overflow-x:auto; padding-bottom:6px;}
+  .ribbon-day{
+    flex:1 0 auto; min-width:25px; height:52px; border-radius:6px;
+    background:var(--card); border:1px solid var(--line);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:4px; cursor:pointer;
+  }
+  .ribbon-day .num{font-size:10.5px;color:var(--ink-faint);font-weight:700;}
+  .ribbon-day .dots{display:flex;gap:2px;}
+  .ribbon-day .dot{width:5px;height:5px;border-radius:50%;}
+  .ribbon-day.today{border-color:var(--navy-950);box-shadow:0 0 0 1px var(--navy-950) inset;}
+  .ribbon-day.today .num{color:var(--navy-950);}
+
+  /* ---------- Track view ---------- */
+  .section-label{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .section-label .txt{font-family:'Cairo';font-weight:800;font-size:14px;color:var(--ink);}
+  .section-label .ln{flex:1;height:1px;background:var(--line-strong);}
+
+  .tracks{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .track-col{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    overflow:hidden; display:flex; flex-direction:column;
+    box-shadow:0 1px 2px rgba(15,23,35,0.03), 0 14px 28px -20px rgba(15,23,35,0.25);
+    border-top:3px solid transparent;
+  }
+  .track-col.state{border-top-color:var(--gold-line);}
+  .track-col.women{border-top-color:var(--burgundy);}
+  .track-col.youth{border-top-color:var(--emerald);}
+
+  .track-head{padding:18px 18px 15px;border-bottom:1px solid var(--line);}
+  .track-head .eyebrow{font-size:10.5px;letter-spacing:1px;font-weight:700;margin-bottom:6px;text-transform:uppercase;display:flex;align-items:center;gap:6px;}
+  .track-col.state .eyebrow{color:var(--gold);}
+  .track-col.women .eyebrow{color:var(--burgundy);}
+  .track-col.youth .eyebrow{color:var(--emerald);}
+  .track-head h3{margin:0 0 4px;font-size:16.5px;font-weight:800;}
+  .track-head .count{font-size:12px;color:var(--ink-muted);}
+
+  .track-body{padding:10px 14px 16px;display:flex;flex-direction:column;gap:8px;flex:1;}
+  .empty-note{color:var(--ink-faint);font-size:13px;padding:24px 8px;text-align:center;}
+
+  .item{
+    display:flex; align-items:flex-start; gap:12px; padding:11px 12px;
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+  }
+  .item .chk{margin-top:2px;}
+  .item .date-chip{
+    flex:0 0 auto; width:50px; text-align:center; padding:6px 0;
+    border-radius:8px; background:var(--card); border:1px solid var(--line-strong);
+    position:relative;
+  }
+  .item .date-chip .dow{font-size:10px;color:var(--ink-muted);font-weight:700;}
+  .item .date-chip .dnum{font-family:'Cairo';font-weight:800;font-size:16.5px;line-height:1.1;}
+  .item .date-chip .multi-tag{
+    position:absolute; top:-7px; left:-7px; background:var(--ink-muted); color:#fff;
+    font-size:9px;font-weight:800;border-radius:5px;padding:1px 4px;
+  }
+  .item .info{flex:1;min-width:0;}
+  .item .info .ttl{font-weight:700;font-size:13.5px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .item .info .meta{font-size:11.5px;color:var(--ink-muted);margin-top:3px;}
+  .item .info .duration-tag{font-size:10.5px;color:var(--ink-faint);margin-top:3px;font-weight:700;}
+  .track-col.state .item .date-chip .dnum{color:var(--gold);}
+  .track-col.women .item .date-chip .dnum{color:var(--burgundy);}
+  .track-col.youth .item .date-chip .dnum{color:var(--emerald);}
+
+  .chk{
+    display:none; width:18px;height:18px;flex:0 0 auto;cursor:pointer;
+    accent-color:var(--gold-line);
+  }
+  body.admin .chk{display:inline-block;}
+
+  .btn-bulk-del{
+    font-family:'Cairo';font-weight:700;font-size:13px;color:#fff;
+    background:#b03556; border:none;border-radius:9px;padding:10px 18px;cursor:pointer;
+    box-shadow:0 6px 16px -8px rgba(176,53,86,0.5);
+    display:none;
+  }
+  .btn-bulk-del:hover{background:#95294a;}
+
+  /* ---------- All-trainings view ---------- */
+  .all-list{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    box-shadow:0 1px 2px rgba(15,23,35,0.03), 0 14px 28px -20px rgba(15,23,35,0.25);}
+  .all-row{
+    display:grid; grid-template-columns:90px 1fr 150px 28px;
+    align-items:center; gap:14px; padding:14px 20px;
+    border-bottom:1px solid var(--line);
+  }
+  .all-row:last-child{border-bottom:none;}
+  .all-row.head{background:var(--paper);color:var(--ink-faint);font-size:11px;font-weight:700;letter-spacing:.4px;padding:11px 20px;}
+  .all-row .dates-col{font-family:'Cairo';font-weight:800;font-size:13px;color:var(--ink);line-height:1.3;}
+  .all-row .ttl{font-weight:700;font-size:14px;}
+  .all-row .meta{font-size:12px;color:var(--ink-muted);margin-top:3px;}
+  .all-row .duration-tag{font-size:11px;color:var(--ink-faint);margin-top:3px;font-weight:700;}
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;
+    padding:5px 11px;border-radius:999px;width:fit-content;border:1px solid transparent;
+  }
+  .badge .sq{width:6px;height:6px;border-radius:50%;}
+  .badge.state{background:var(--gold-soft);color:var(--gold);border-color:rgba(60,106,89,0.25);}
+  .badge.women{background:var(--burgundy-soft);color:var(--burgundy);border-color:rgba(115,111,100,0.25);}
+  .badge.youth{background:var(--emerald-soft);color:var(--emerald);border-color:rgba(107,148,132,0.3);}
+  .badge .sq.state{background:var(--gold);}
+  .badge .sq.women{background:var(--burgundy);}
+  .badge .sq.youth{background:var(--emerald);}
+
+  /* ---------- Admin bar / modal ---------- */
+  .admin-bar{display:flex; justify-content:flex-end; margin-bottom:16px; gap:10px;}
+  .btn-add{
+    font-family:'Cairo';font-weight:700;font-size:13px;color:#fff;
+    background:var(--navy-950);
+    border:none;border-radius:9px;padding:10px 18px;cursor:pointer;
+    box-shadow:0 6px 16px -8px rgba(10,18,32,0.5);
+  }
+  .btn-add:hover{background:#182741;}
+  .modal-bg{
+    position:fixed;inset:0;background:rgba(10,15,24,0.6);backdrop-filter:blur(3px);
+    display:none;align-items:center;justify-content:center;z-index:50;padding:20px;
+    overflow-y:auto;
+  }
+  .modal-bg.show{display:flex;}
+  .modal{
+    background:var(--card);border:1px solid var(--line-strong);border-radius:14px;
+    width:100%;max-width:460px;padding:24px;
+    box-shadow:0 24px 60px -20px rgba(10,15,24,0.4);
+    max-height:90vh;overflow-y:auto;
+  }
+  .modal h3{margin:0 0 18px;font-size:16.5px;font-weight:800;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:12px;color:var(--ink-muted);margin-bottom:6px;font-weight:700;}
+  .field input,.field select{
+    width:100%;background:var(--paper);border:1px solid var(--line-strong);
+    color:var(--ink);border-radius:8px;padding:10px 12px;font-family:'Tajawal';font-size:13.5px;
+  }
+  .field input:focus,.field select:focus{outline:none;border-color:var(--gold-line);}
+  .row2{display:flex;gap:10px;}
+  .row2 > div{flex:1;}
+
+  .day-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
+  .day-row input[type=date]{flex:1;}
+  .remove-day-btn{
+    width:34px;height:34px;border-radius:8px;border:1px solid var(--line-strong);
+    background:var(--paper);color:var(--ink-muted);cursor:pointer;flex:0 0 auto;font-size:13px;
+  }
+  .remove-day-btn:hover{color:#b03556;border-color:#b03556;}
+  .btn-add-day{
+    width:100%;border:1px dashed var(--line-strong);background:transparent;color:var(--ink-muted);
+    font-family:'Cairo';font-weight:700;font-size:12.5px;border-radius:8px;padding:9px;
+    cursor:pointer;margin-top:2px;
+  }
+  .btn-add-day:hover{border-color:var(--gold-line);color:var(--gold);}
+  .duration-preview{
+    background:var(--gold-soft);border:1px solid rgba(60,106,89,0.2);border-radius:9px;
+    padding:10px 12px;font-size:12.5px;color:var(--gold);font-weight:700;margin-top:2px;
+  }
+
+  .modal-actions{display:flex;gap:10px;margin-top:20px;}
+  .modal-actions button{flex:1;}
+  .btn-cancel,.btn-save{
+    padding:11px;border-radius:9px;font-family:'Cairo';font-weight:700;font-size:13.5px;
+    cursor:pointer;border:none;
+  }
+  .btn-cancel{background:var(--paper);color:var(--ink-muted);border:1px solid var(--line-strong) !important;}
+  .btn-save{background:var(--navy-950);color:#fff;}
+
+  .status-note{font-size:11.5px;color:var(--ink-faint);text-align:center;margin-top:30px;}
+
+  /* ---------- Auth screen ---------- */
+  .auth-screen{
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    background:
+      radial-gradient(900px 400px at 20% 0%, rgba(107,148,132,0.16), transparent 60%),
+      radial-gradient(800px 380px at 100% 100%, rgba(115,111,100,0.12), transparent 55%),
+      var(--paper);
+  }
+  .auth-card{
+    width:100%; max-width:420px; background:var(--card); border:1px solid var(--line-strong);
+    border-radius:16px; padding:30px; box-shadow:0 24px 60px -20px rgba(15,23,35,0.25);
+  }
+  .auth-brand{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+  .auth-brand .mark{
+    width:42px;height:42px;border-radius:10px;
+    background:linear-gradient(155deg,#6b9484,var(--gold-line) 55%,#1f4234);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cairo';font-weight:900;color:#f4f6f5;font-size:17px;
+  }
+  .auth-brand .t1{font-family:'Cairo';font-weight:800;font-size:16.5px;}
+  .auth-brand .t2{font-size:11.5px;color:var(--ink-muted);margin-top:1px;}
+
+  .auth-tabs{display:flex;gap:4px;background:var(--paper);padding:4px;border-radius:10px;border:1px solid var(--line-strong);margin-bottom:20px;}
+  .auth-tabs button{
+    flex:1; border:none;background:transparent;color:var(--ink-muted);
+    font-family:'Cairo';font-weight:700;font-size:13px; padding:9px 0;border-radius:7px;cursor:pointer;
+  }
+  .auth-tabs button.active{background:var(--navy-950);color:#fff;}
+
+  .auth-error{color:#b03556;font-size:12px;font-weight:700;margin-top:10px;min-height:14px;}
+
+  /* ---------- Notifications ---------- */
+  .notif-wrap{position:relative;}
+  .notif-btn{
+    width:32px;height:32px;border-radius:8px;border:1px solid var(--line-strong);
+    background:var(--card);color:var(--ink-muted);cursor:pointer;font-size:14px;
+    display:flex;align-items:center;justify-content:center;position:relative;
+  }
+  .notif-badge{
+    position:absolute; top:-5px; left:-5px; background:#b03556;color:#fff;
+    font-size:9.5px;font-weight:800;border-radius:999px;min-width:16px;height:16px;
+    display:flex;align-items:center;justify-content:center;padding:0 3px;
+  }
+  .notif-panel{
+    position:absolute; top:40px; left:0; width:290px; max-height:340px; overflow-y:auto;
+    background:var(--card); border:1px solid var(--line-strong); border-radius:12px;
+    box-shadow:0 20px 44px -16px rgba(15,23,35,0.3); z-index:40; padding:8px;
+  }
+  .notif-panel .ttl-row{font-family:'Cairo';font-weight:800;font-size:12.5px;padding:8px 10px 10px;color:var(--ink);}
+  .notif-item{padding:9px 10px;border-radius:9px;margin-bottom:4px;background:var(--card);cursor:pointer;transition:.12s;border:1px solid var(--line);}
+  .notif-item.unread{background:var(--paper);border-color:var(--line-strong);}
+  .notif-item:hover{background:var(--gold-soft);}
+  .notif-item .n-ttl{display:flex;align-items:center;gap:6px;}
+  .notif-item.unread .n-ttl::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold-line);flex:0 0 auto;}
+  .notif-item .n-ttl{font-weight:700;font-size:12.5px;color:var(--ink);}
+  .notif-item .n-meta{font-size:11px;color:var(--ink-muted);margin-top:2px;}
+  .notif-empty{padding:20px 10px;text-align:center;color:var(--ink-faint);font-size:12px;}
+
+  .user-chip{
+    display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line-strong);
+    border-radius:10px;padding:5px 6px 5px 12px;
+  }
+  .user-chip .u-name{font-family:'Cairo';font-weight:700;font-size:12.5px;}
+  .user-chip .u-role{font-size:10px;color:var(--ink-muted);}
+  .logout-btn{
+    width:28px;height:28px;border-radius:7px;border:1px solid var(--line-strong);
+    background:var(--paper);color:var(--ink-muted);cursor:pointer;font-size:12px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .logout-btn:hover{color:#b03556;border-color:#b03556;}
+
+
+  @media (max-width:900px){
+    .tracks{grid-template-columns:1fr;}
+    main{padding:22px 16px 50px;}
+    .toolbar{padding:12px 16px;}
+    .hero{padding:26px 18px 20px;}
+    .hero-inner{align-items:flex-start;}
+  }
+  @media (max-width:640px){
+    .all-row{grid-template-columns:1fr auto;grid-template-areas:"dates badge" "info info" "chk chk"; row-gap:6px;}
+    .all-row.head{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="auth-screen" id="authScreen">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="mark">ت</div>
+      <div>
+        <div class="t1">شاشة التدريبات</div>
+        <div class="t2">سجّلي دخولك للمتابعة</div>
+      </div>
+    </div>
+    <div class="auth-tabs">
+      <button id="tabLogin" class="active">تسجيل الدخول</button>
+      <button id="tabSignup">إنشاء حساب</button>
+    </div>
+
+    <div id="loginForm">
+      <div class="field"><label>اسم المستخدم</label><input type="text" id="liUser" placeholder="اسم المستخدم"></div>
+      <div class="field"><label>كلمة المرور</label><input type="password" id="liPass" placeholder="كلمة المرور"></div>
+      <button class="btn-save" id="doLogin" style="width:100%;">تسجيل الدخول</button>
+      <div class="auth-error" id="loginError"></div>
+    </div>
+
+    <div id="signupForm" style="display:none;">
+      <div class="field"><label>الاسم الكامل</label><input type="text" id="suName" placeholder="مثال: سارة يوسف"></div>
+      <div class="field"><label>اسم المستخدم</label><input type="text" id="suUser" placeholder="اسم مستخدم جديد"></div>
+      <div class="field"><label>كلمة المرور</label><input type="password" id="suPass" placeholder="كلمة مرور"></div>
+      <div class="field">
+        <label>نوع الحساب</label>
+        <select id="suTrack">
+          <option value="admin">مدير النظام (كل الشرائح + إدارة التدريبات)</option>
+          <option value="state">قيادات الدولة</option>
+          <option value="women">قيادات نسائية</option>
+          <option value="youth">قيادات شبابية</option>
+        </select>
+      </div>
+      <button class="btn-save" id="doSignup" style="width:100%;">إنشاء الحساب</button>
+      <div class="auth-error" id="signupError"></div>
+    </div>
+  </div>
+</div>
+
+<div id="appRoot" style="display:none;">
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-brand">
+      <div class="hero-mark">ت</div>
+      <div>
+        <div class="hero-eyebrow">لوحة متابعة البرامج التدريبية</div>
+        <div class="hero-title">شاشة التدريبات</div>
+        <div class="hero-sub">قيادات الدولة · قيادات نسائية · قيادات شبابية</div>
+      </div>
+    </div>
+    <div class="hero-month">
+      <div class="lbl">الشهر الحالي</div>
+      <div class="val" id="heroMonth">— <small>—</small></div>
+    </div>
+  </div>
+  <div class="hero-rule"></div>
+</div>
+
+<div class="toolbar">
+  <div class="toolbar-inner">
+    <div class="month-switch">
+      <button class="nav" id="prevMonth">‹</button>
+      <div class="cur" id="monthLabel">—</div>
+      <button class="nav" id="nextMonth">›</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <select class="gov-select" id="govFilter">
+        <option value="all">كل المحافظات</option>
+      </select>
+      <div class="view-tabs">
+        <button id="tabTrack" class="active">حسب الشريحة</button>
+        <button id="tabDay">حسب اليوم</button>
+        <button id="tabAll">كل تدريبات الشهر</button>
+      </div>
+      <button class="admin-toggle" id="adminToggle" title="وضع الإدارة">⚙</button>
+      <div class="notif-wrap">
+        <button class="notif-btn" id="notifBtn" title="الإشعارات">🔔<span class="notif-badge" id="notifBadge" style="display:none;">0</span></button>
+        <div class="notif-panel" id="notifPanel" style="display:none;"></div>
+      </div>
+      <div class="user-chip">
+        <div>
+          <div class="u-name" id="userName">—</div>
+          <div class="u-role" id="userRole">—</div>
+        </div>
+        <button class="logout-btn" id="logoutBtn" title="تسجيل خروج">⏻</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="ribbon-wrap">
+    <div class="ribbon-title">نظرة سريعة على الشهر</div>
+    <div class="ribbon" id="ribbon"></div>
+  </div>
+
+  <div class="admin-bar" id="adminBar" style="display:none;">
+    <button class="btn-bulk-del" id="bulkDelete">حذف المحدد (<span id="selCount">0</span>)</button>
+    <button class="btn-add" id="openAdd">+ إضافة تدريب</button>
+  </div>
+
+  <div id="viewTrack"></div>
+  <div id="viewDay" style="display:none;">
+    <div class="day-hero">
+      <div class="day-title" id="dayTitle">— <small>—</small></div>
+      <div class="month-switch">
+        <button class="today-btn" id="gotoToday">اليوم</button>
+        <button class="nav" id="prevDay">‹</button>
+        <div class="cur" id="dayLabel">—</div>
+        <button class="nav" id="nextDay">›</button>
+      </div>
+    </div>
+    <div id="dayTracks"></div>
+  </div>
+  <div id="viewAll" style="display:none;"></div>
+
+  <div class="status-note" id="statusNote">جارٍ تحميل البيانات…</div>
+</main>
+
+</div>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h3>إضافة تدريب جديد</h3>
+    <div class="field">
+      <label>عنوان التدريب</label>
+      <input type="text" id="fTitle" placeholder="مثال: ورشة القيادة والتخطيط">
+    </div>
+    <div class="field">
+      <label>اسم المدرب</label>
+      <input type="text" id="fTrainer" placeholder="مثال: د. سامر النجار">
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>الشريحة</label>
+        <select id="fTrack">
+          <option value="state">قيادات الدولة</option>
+          <option value="women">قيادات نسائية</option>
+          <option value="youth">قيادات شبابية</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>المحافظة</label>
+        <select id="fGov"></select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>أيام التدريب</label>
+      <div id="daysList"></div>
+      <button type="button" class="btn-add-day" id="addDayBtn">+ إضافة يوم آخر</button>
+    </div>
+
+    <div class="field row2">
+      <div>
+        <label>من الساعة</label>
+        <input type="time" id="fStart">
+      </div>
+      <div>
+        <label>إلى الساعة</label>
+        <input type="time" id="fEnd">
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="duration-preview" id="durationPreview">المدة الإجمالية: —</div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" id="cancelAdd">إلغاء</button>
+      <button class="btn-save" id="saveAdd">حفظ التدريب</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const sb = createClient('https://yfnwhwsjyuenuecenlfu.supabase.co', 'sb_publishable_MwPexePu_9mi4nP0JUqsRw_ibzgfYfj');
+
+const ARABIC_MONTHS = ["كانون الثاني","شباط","آذار","نيسان","أيار","حزيران","تموز","آب","أيلول","تشرين الأول","تشرين الثاني","كانون الأول"];
+const ARABIC_DAYS = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+const ARABIC_DAYS_SHORT = ["ح","ن","ث","ر","خ","ج","س"];
+const TRACK_LABEL = {state:"قيادات الدولة", women:"قيادات نسائية", youth:"قيادات شبابية"};
+const SYRIA_GOVS = ["دمشق","ريف دمشق","حلب","حمص","حماة","اللاذقية","طرطوس","إدلب","الحسكة","دير الزور","الرقة","درعا","السويداء","القنيطرة"];
+
+let selected = new Set();
+let formDays = [];
+
+let state = {
+  year: 2026,
+  month: 8,
+  day: 24,
+  view: "track",
+  admin: false,
+  govFilter: "all",
+  trainings: []
+};
+
+const STORAGE_KEY = "trainings-v2";
+
+function seedData(){
+  return [
+    {id:"s1", track:"state", title:"ورشة التخطيط الاستراتيجي", trainer:"د. سامر النجار", dates:["2026-08-04","2026-08-05"], startTime:"10:00", endTime:"14:00", gov:"دمشق"},
+    {id:"s2", track:"state", title:"جلسة إدارة الأزمات", trainer:"أ. ليلى حداد", dates:["2026-08-18"], startTime:"16:00", endTime:"18:00", gov:"حلب"},
+    {id:"s3", track:"women", title:"برنامج تمكين القيادات النسائية", trainer:"د. رنا العلي", dates:["2026-08-06","2026-08-07","2026-08-08"], startTime:"11:00", endTime:"15:00", gov:"حمص"},
+    {id:"s4", track:"women", title:"ورشة التواصل الفعّال", trainer:"أ. هبة شاهين", dates:["2026-08-20"], startTime:"14:00", endTime:"17:00", gov:"دمشق"},
+    {id:"s5", track:"youth", title:"معسكر القيادة الشبابية", trainer:"م. كريم فارس", dates:["2026-08-08","2026-08-09"], startTime:"09:00", endTime:"16:00", gov:"اللاذقية"},
+    {id:"s6", track:"youth", title:"ورشة العمل التطوعي", trainer:"أ. ندى قاسم", dates:["2026-08-25"], startTime:"17:30", endTime:"19:30", gov:"درعا"}
+  ];
+}
+
+const ACCOUNTS_KEY = "accounts-v1";
+const ROLE_LABEL = {admin:"مدير النظام", state:"قيادات الدولة", women:"قيادات نسائية", youth:"قيادات شبابية"};
+
+let accounts = [];
+let currentUser = null;
+let readNotifs = new Set();
+
+async function loadAccounts(){
+  try{
+    const { data, error } = await sb.from('accounts').select('*');
+    if(error) throw error;
+    accounts = data || [];
+  }catch(e){
+    accounts = [];
+  }
+}
+
+async function insertAccount(acc){
+  const { error } = await sb.from('accounts').insert(acc);
+  if(error) throw error;
+}
+
+function showAuth(){
+  document.getElementById("authScreen").style.display = "flex";
+  document.getElementById("appRoot").style.display = "none";
+}
+
+async function loadReads(){
+  if(!currentUser){ readNotifs = new Set(); return; }
+  try{
+    const { data, error } = await sb.from('notif_reads').select('notif_key').eq('user_id', currentUser.id);
+    if(error) throw error;
+    readNotifs = new Set((data||[]).map(r=>r.notif_key));
+  }catch(e){ readNotifs = new Set(); }
+}
+
+async function markNotifRead(key){
+  if(!currentUser) return;
+  try{ await sb.from('notif_reads').insert({user_id: currentUser.id, notif_key: key}); }
+  catch(e){ /* likely already marked read, ignore */ }
+}
+
+async function showApp(){
+  document.getElementById("authScreen").style.display = "none";
+  document.getElementById("appRoot").style.display = "block";
+  document.getElementById("userName").textContent = currentUser.name || currentUser.username;
+  document.getElementById("userRole").textContent = ROLE_LABEL[currentUser.track] || currentUser.track;
+  document.getElementById("adminToggle").style.display = currentUser.track==="admin" ? "flex" : "none";
+  await loadReads();
+  loadData();
+}
+
+document.getElementById("tabLogin").addEventListener("click", ()=>{
+  document.getElementById("tabLogin").classList.add("active");
+  document.getElementById("tabSignup").classList.remove("active");
+  document.getElementById("loginForm").style.display = "";
+  document.getElementById("signupForm").style.display = "none";
+});
+document.getElementById("tabSignup").addEventListener("click", ()=>{
+  document.getElementById("tabSignup").classList.add("active");
+  document.getElementById("tabLogin").classList.remove("active");
+  document.getElementById("signupForm").style.display = "";
+  document.getElementById("loginForm").style.display = "none";
+});
+
+document.getElementById("doLogin").addEventListener("click", async ()=>{
+  const user = document.getElementById("liUser").value.trim();
+  const pass = document.getElementById("liPass").value;
+  const errEl = document.getElementById("loginError");
+  if(!user || !pass){ errEl.textContent = "الرجاء إدخال اسم المستخدم وكلمة المرور"; return; }
+  const found = accounts.find(a=> a.username===user && a.password===pass);
+  if(!found){ errEl.textContent = "اسم المستخدم أو كلمة المرور غير صحيحة"; return; }
+  errEl.textContent = "";
+  currentUser = found;
+  showApp();
+});
+
+document.getElementById("doSignup").addEventListener("click", async ()=>{
+  const name = document.getElementById("suName").value.trim();
+  const user = document.getElementById("suUser").value.trim();
+  const pass = document.getElementById("suPass").value;
+  const track = document.getElementById("suTrack").value;
+  const errEl = document.getElementById("signupError");
+  if(!user || !pass){ errEl.textContent = "الرجاء تعبئة اسم المستخدم وكلمة المرور"; return; }
+  if(accounts.some(a=> a.username===user)){ errEl.textContent = "اسم المستخدم مستخدم مسبقًا"; return; }
+  errEl.textContent = "";
+  const newAcc = {id:"u-"+Date.now(), name, username:user, password:pass, track};
+  try{
+    await insertAccount(newAcc);
+  }catch(e){
+    errEl.textContent = "تعذّر إنشاء الحساب، حاولي مجددًا";
+    return;
+  }
+  accounts.push(newAcc);
+  currentUser = newAcc;
+  showApp();
+});
+
+document.getElementById("logoutBtn").addEventListener("click", ()=>{
+  currentUser = null;
+  state.admin = false;
+  document.body.classList.remove("admin");
+  document.getElementById("liUser").value=""; document.getElementById("liPass").value="";
+  document.getElementById("loginError").textContent="";
+  showAuth();
+});
+
+
+async function loadData(){
+  try{
+    const { data, error } = await sb.from('trainings').select('*').order('created_at');
+    if(error) throw error;
+    state.trainings = (data||[]).map(row=>({
+      id: row.id, track: row.track, title: row.title, trainer: row.trainer,
+      gov: row.gov, dates: row.dates, startTime: row.start_time, endTime: row.end_time
+    }));
+    setStatus("تم تحميل الجدول من قاعدة البيانات — البيانات محفوظة بشكل دائم ومشتركة بين كل من يفتح هذه الشاشة.");
+  }catch(e){
+    state.trainings = [];
+    setStatus("تعذّر الاتصال بقاعدة البيانات، تحقّقي من الاتصال بالإنترنت.");
+  }
+  render();
+}
+
+async function insertTraining(t){
+  const row = {
+    id: t.id, track: t.track, title: t.title, trainer: t.trainer,
+    gov: t.gov, dates: t.dates, start_time: t.startTime, end_time: t.endTime
+  };
+  const { error } = await sb.from('trainings').insert(row);
+  if(error) throw error;
+}
+
+async function deleteTrainings(ids){
+  const { error } = await sb.from('trainings').delete().in('id', ids);
+  if(error) throw error;
+}
+
+function setStatus(msg){ document.getElementById("statusNote").textContent = msg; }
+function pad(n){ return String(n).padStart(2,"0"); }
+function daysInMonth(y,m){ return new Date(y,m,0).getDate(); }
+
+function timeToMinutes(t){
+  if(!t) return null;
+  const [h,m] = t.split(":").map(Number);
+  return h*60+m;
+}
+
+function calcDurationText(dates, startTime, endTime){
+  const daysCount = dates.length;
+  const dayWord = daysCount===1 ? "يوم" : daysCount===2 ? "يومان" : "أيام";
+  const sm = timeToMinutes(startTime), em = timeToMinutes(endTime);
+  if(sm===null || em===null){
+    return `${daysCount} ${dayWord}`;
+  }
+  let perDayMins = em - sm;
+  if(perDayMins < 0) perDayMins = 0;
+  const totalHours = (perDayMins * daysCount) / 60;
+  const hoursDisplay = Number.isInteger(totalHours) ? totalHours : totalHours.toFixed(1);
+  return `${daysCount} ${dayWord} · ${hoursDisplay} ساعة إجمالاً`;
+}
+
+function formatDatesList(dates){
+  const sorted = [...dates].sort();
+  if(!sorted.length) return "—";
+  const dayNums = sorted.map(d=> parseInt(d.split("-")[2],10));
+  const monthName = ARABIC_MONTHS[new Date(sorted[0]+"T00:00:00").getMonth()];
+  return dayNums.join("، ") + " " + monthName;
+}
+
+function passesGovFilter(t){
+  if(state.govFilter==="all") return true;
+  return (t.gov||"غير محدد") === state.govFilter;
+}
+
+function trainingDatesInMonth(t,y,m){
+  return t.dates.filter(d=>{
+    const dt = new Date(d+"T00:00:00");
+    return dt.getFullYear()===y && (dt.getMonth()+1)===m;
+  }).sort();
+}
+
+function monthTrainings(){
+  const y = state.year, m = state.month;
+  return state.trainings
+    .filter(t=> passesGovFilter(t) && trainingDatesInMonth(t,y,m).length>0)
+    .map(t=> Object.assign({}, t, {_refDates: trainingDatesInMonth(t,y,m)}))
+    .sort((a,b)=> (a._refDates[0]+a.startTime).localeCompare(b._refDates[0]+b.startTime));
+}
+
+function dayTrainings(){
+  const target = `${state.year}-${pad(state.month)}-${pad(state.day)}`;
+  return state.trainings
+    .filter(t=> passesGovFilter(t) && t.dates.includes(target))
+    .sort((a,b)=> (a.startTime||"").localeCompare(b.startTime||""));
+}
+
+function refreshGovOptions(){
+  const sel = document.getElementById("govFilter");
+  const fSel = document.getElementById("fGov");
+  const extra = [...new Set(state.trainings.map(t=>t.gov).filter(g=>g && !SYRIA_GOVS.includes(g)))].sort((a,b)=>a.localeCompare(b,'ar'));
+  const allGovs = [...SYRIA_GOVS, ...extra];
+  const prev = state.govFilter;
+  sel.innerHTML = `<option value="all">كل المحافظات</option>` +
+    allGovs.map(g=>`<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`).join("");
+  if(allGovs.includes(prev) || prev==="all"){ sel.value = prev; } else { sel.value="all"; state.govFilter="all"; }
+  if(fSel){
+    fSel.innerHTML = `<option value="">اختر المحافظة</option>` +
+      allGovs.map(g=>`<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`).join("");
+  }
+}
+
+function renderRibbon(){
+  const y=state.year, m=state.month;
+  const total = daysInMonth(y,m);
+  const byDay = {};
+  state.trainings.filter(passesGovFilter).forEach(t=>{
+    trainingDatesInMonth(t,y,m).forEach(dstr=>{
+      const day = parseInt(dstr.split("-")[2],10);
+      byDay[day] = byDay[day] || [];
+      byDay[day].push(t.track);
+    });
+  });
+  const colorVar = {state:"var(--gold-line)", women:"var(--burgundy)", youth:"var(--emerald)"};
+  const today = new Date();
+  const isCurMonth = today.getFullYear()===y && (today.getMonth()+1)===m;
+  let html = "";
+  for(let d=1; d<=total; d++){
+    const marks = (byDay[d]||[]);
+    const uniq = [...new Set(marks)];
+    const isToday = isCurMonth && today.getDate()===d;
+    html += `<div class="ribbon-day${isToday?' today':''}" data-day="${d}">
+      <div class="num">${d}</div>
+      <div class="dots">${uniq.map(tr=>`<div class="dot" style="background:${colorVar[tr]}"></div>`).join("")}</div>
+    </div>`;
+  }
+  document.getElementById("ribbon").innerHTML = html;
+  document.querySelectorAll(".ribbon-day").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      state.day = parseInt(el.getAttribute("data-day"),10);
+      switchTab("day");
+    });
+  });
+}
+
+function itemRow(t, forcedDate){
+  const refDateStr = forcedDate ? null : (t._refDates && t._refDates[0]);
+  const chipDate = forcedDate || new Date(refDateStr+"T00:00:00");
+  const dow = ARABIC_DAYS_SHORT[chipDate.getDay()];
+  const multiDay = t.dates.length>1;
+  const durationText = calcDurationText(t.dates, t.startTime, t.endTime);
+  const metaParts = [];
+  metaParts.push(`${t.startTime||"—"}–${t.endTime||"—"}`);
+  if(t.trainer) metaParts.push(escapeHtml(t.trainer));
+  if(t.gov) metaParts.push(escapeHtml(t.gov));
+  return `<div class="item">
+    <input type="checkbox" class="chk" data-id="${t.id}" ${selected.has(t.id)?'checked':''}>
+    <div class="date-chip">
+      ${multiDay?`<div class="multi-tag">${t.dates.length} أيام</div>`:''}
+      <div class="dow">${dow}</div>
+      <div class="dnum">${pad(chipDate.getDate())}</div>
+    </div>
+    <div class="info">
+      <div class="ttl">${escapeHtml(t.title)}</div>
+      <div class="meta">${metaParts.join(' &middot; ')}</div>
+      <div class="duration-tag">${durationText}</div>
+    </div>
+  </div>`;
+}
+
+function escapeHtml(s){
+  return (s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+const TRACK_ICONS = {
+  state: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 5H3l9-5z"/><path d="M5 10v9M10 10v9M14 10v9M19 10v9"/><path d="M3 21h18"/></svg>`,
+  women: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="9" r="5"/><path d="M12 14v7M9 18h6"/></svg>`,
+  youth: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z"/></svg>`
+};
+
+function buildTracksGrid(list, emptyMsg, forcedDate){
+  const tracks = ["state","women","youth"];
+  let html = `<div class="tracks">`;
+  tracks.forEach(tr=>{
+    const items = list.filter(t=>t.track===tr);
+    html += `<div class="track-col ${tr}">
+      <div class="track-head">
+        <div class="eyebrow">${TRACK_ICONS[tr]}${tr==='state'?'الشريحة الأولى':tr==='women'?'الشريحة الثانية':'الشريحة الثالثة'}</div>
+        <h3>${TRACK_LABEL[tr]}</h3>
+        <div class="count">${items.length} تدريب</div>
+      </div>
+      <div class="track-body">
+        ${items.length ? items.map(t=>itemRow(t, forcedDate)).join("") : `<div class="empty-note">${emptyMsg}</div>`}
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
+function bindCheckboxes(container){
+  container.querySelectorAll(".chk").forEach(cb=> cb.addEventListener("change", onCheckToggle));
+}
+
+function renderTrackView(){
+  const list = monthTrainings();
+  let html = `<div class="section-label"><div class="txt">التدريبات حسب الشريحة</div><div class="ln"></div></div>`;
+  html += buildTracksGrid(list, "لا توجد تدريبات مسجّلة لهذه الشريحة هذا الشهر");
+  document.getElementById("viewTrack").innerHTML = html;
+  bindCheckboxes(document.getElementById("viewTrack"));
+}
+
+function renderDayView(){
+  const list = dayTrainings();
+  const d = new Date(`${state.year}-${pad(state.month)}-${pad(state.day)}T00:00:00`);
+  document.getElementById("dayTitle").innerHTML = `${ARABIC_DAYS[d.getDay()]} <small>${pad(d.getDate())} ${ARABIC_MONTHS[state.month-1]} ${state.year}</small>`;
+  document.getElementById("dayLabel").textContent = `${pad(d.getDate())}/${pad(d.getMonth()+1)}`;
+  document.getElementById("dayTracks").innerHTML = buildTracksGrid(list, "لا توجد تدريبات مسجّلة لهذه الشريحة اليوم", d);
+  bindCheckboxes(document.getElementById("dayTracks"));
+}
+
+function renderAllView(){
+  const list = monthTrainings();
+  let html = `<div class="section-label"><div class="txt">كل تدريبات الشهر</div><div class="ln"></div></div>
+    <div class="all-list">
+    <div class="all-row head">
+      <div>الأيام</div><div>التدريب</div><div>الشريحة</div><div></div>
+    </div>`;
+  if(!list.length){
+    html += `<div class="empty-note" style="padding:36px 8px;">لا توجد تدريبات مسجّلة هذا الشهر</div>`;
+  } else {
+    list.forEach(t=>{
+      const metaParts = [`${t.startTime||"—"}–${t.endTime||"—"}`];
+      if(t.trainer) metaParts.push(escapeHtml(t.trainer));
+      if(t.gov) metaParts.push(escapeHtml(t.gov));
+      const durationText = calcDurationText(t.dates, t.startTime, t.endTime);
+      html += `<div class="all-row">
+        <div class="dates-col">${formatDatesList(t._refDates)}</div>
+        <div>
+          <div class="ttl">${escapeHtml(t.title)}</div>
+          <div class="meta">${metaParts.join(' &middot; ')}</div>
+          <div class="duration-tag">${durationText}</div>
+        </div>
+        <div><span class="badge ${t.track}"><span class="sq ${t.track}"></span>${TRACK_LABEL[t.track]}</span></div>
+        <input type="checkbox" class="chk" data-id="${t.id}" ${selected.has(t.id)?'checked':''}>
+      </div>`;
+    });
+  }
+  html += `</div>`;
+  document.getElementById("viewAll").innerHTML = html;
+  bindCheckboxes(document.getElementById("viewAll"));
+}
+
+function onCheckToggle(e){
+  const id = e.target.getAttribute("data-id");
+  if(e.target.checked){ selected.add(id); } else { selected.delete(id); }
+  updateBulkBtn();
+}
+
+function updateBulkBtn(){
+  const btn = document.getElementById("bulkDelete");
+  const cnt = selected.size;
+  document.getElementById("selCount").textContent = cnt;
+  btn.style.display = cnt>0 ? "inline-block" : "none";
+}
+
+function render(){
+  document.getElementById("monthLabel").innerHTML = `${ARABIC_MONTHS[state.month-1]} ${state.year}`;
+  document.getElementById("heroMonth").innerHTML = `${ARABIC_MONTHS[state.month-1]} <small>${state.year}</small>`;
+  refreshGovOptions();
+  renderRibbon();
+  if(state.view==="track"){ renderTrackView(); }
+  else if(state.view==="day"){ renderDayView(); }
+  else { renderAllView(); }
+  renderNotifications();
+}
+
+function upcomingForUser(){
+  if(!currentUser) return [];
+  const today = new Date(); today.setHours(0,0,0,0);
+  const horizon = new Date(today); horizon.setDate(horizon.getDate()+7);
+  const relevant = state.trainings.filter(t=> currentUser.track==="admin" || t.track===currentUser.track);
+  const out = [];
+  relevant.forEach(t=>{
+    t.dates.forEach(dstr=>{
+      const d = new Date(dstr+"T00:00:00");
+      if(d>=today && d<=horizon){
+        out.push({id:t.id, date:dstr, dObj:d, title:t.title, time:t.startTime, track:t.track});
+      }
+    });
+  });
+  out.sort((a,b)=> (a.date+(a.time||"")).localeCompare(b.date+(b.time||"")));
+  return out;
+}
+
+function notifKey(n){ return n.id + "|" + n.date; }
+
+function renderNotifications(){
+  const list = upcomingForUser();
+  const badge = document.getElementById("notifBadge");
+  const unreadCount = list.filter(n=> !readNotifs.has(notifKey(n))).length;
+  badge.textContent = unreadCount;
+  badge.style.display = unreadCount ? "flex" : "none";
+  const panel = document.getElementById("notifPanel");
+  let html = `<div class="ttl-row">تدريبات ${currentUser && currentUser.track==="admin" ? "قادمة (كل الشرائح)" : "قادمة على شريحتك"}</div>`;
+  if(!list.length){
+    html += `<div class="notif-empty">ما في تدريبات خلال الأيام السبعة الجاية</div>`;
+  } else {
+    list.forEach(n=>{
+      const isUnread = !readNotifs.has(notifKey(n));
+      html += `<div class="notif-item${isUnread?' unread':''}" data-key="${notifKey(n)}" data-date="${n.date}">
+        <div class="n-ttl">${escapeHtml(n.title)}</div>
+        <div class="n-meta">${pad(n.dObj.getDate())} ${ARABIC_MONTHS[n.dObj.getMonth()]} &middot; ${n.time||"—"} &middot; ${TRACK_LABEL[n.track]}</div>
+      </div>`;
+    });
+  }
+  panel.innerHTML = html;
+  panel.querySelectorAll(".notif-item").forEach(el=>{
+    el.addEventListener("click", async ()=>{
+      const key = el.getAttribute("data-key");
+      const dstr = el.getAttribute("data-date");
+      readNotifs.add(key);
+      await markNotifRead(key);
+      const d = new Date(dstr+"T00:00:00");
+      state.year = d.getFullYear();
+      state.month = d.getMonth()+1;
+      state.day = d.getDate();
+      state.govFilter = "all";
+      panel.style.display = "none";
+      switchTab("day");
+    });
+  });
+}
+
+document.getElementById("notifBtn").addEventListener("click", (e)=>{
+  e.stopPropagation();
+  const panel = document.getElementById("notifPanel");
+  panel.style.display = panel.style.display==="block" ? "none" : "block";
+});
+document.addEventListener("click", (e)=>{
+  const panel = document.getElementById("notifPanel");
+  const btn = document.getElementById("notifBtn");
+  if(panel.style.display==="block" && !panel.contains(e.target) && e.target!==btn){
+    panel.style.display = "none";
+  }
+});
+
+function clampDay(){
+  const max = daysInMonth(state.year, state.month);
+  if(state.day > max) state.day = max;
+  if(state.day < 1) state.day = 1;
+}
+
+function switchTab(view){
+  state.view = view;
+  document.getElementById("tabTrack").classList.toggle("active", view==="track");
+  document.getElementById("tabDay").classList.toggle("active", view==="day");
+  document.getElementById("tabAll").classList.toggle("active", view==="all");
+  document.getElementById("viewTrack").style.display = view==="track" ? "" : "none";
+  document.getElementById("viewDay").style.display = view==="day" ? "" : "none";
+  document.getElementById("viewAll").style.display = view==="all" ? "" : "none";
+  clampDay();
+  render();
+}
+
+document.getElementById("prevMonth").addEventListener("click", ()=>{
+  state.month--; if(state.month<1){state.month=12; state.year--;}
+  clampDay(); render();
+});
+document.getElementById("nextMonth").addEventListener("click", ()=>{
+  state.month++; if(state.month>12){state.month=1; state.year++;}
+  clampDay(); render();
+});
+document.getElementById("tabTrack").addEventListener("click", ()=> switchTab("track"));
+document.getElementById("tabDay").addEventListener("click", ()=> switchTab("day"));
+document.getElementById("tabAll").addEventListener("click", ()=> switchTab("all"));
+
+document.getElementById("prevDay").addEventListener("click", ()=>{
+  state.day--;
+  if(state.day<1){ state.month--; if(state.month<1){state.month=12; state.year--;} state.day=daysInMonth(state.year,state.month); }
+  render();
+});
+document.getElementById("nextDay").addEventListener("click", ()=>{
+  state.day++;
+  if(state.day>daysInMonth(state.year,state.month)){ state.month++; if(state.month>12){state.month=1; state.year++;} state.day=1; }
+  render();
+});
+document.getElementById("gotoToday").addEventListener("click", ()=>{
+  const t = new Date();
+  state.year=t.getFullYear(); state.month=t.getMonth()+1; state.day=t.getDate();
+  render();
+});
+
+document.getElementById("govFilter").addEventListener("change", (e)=>{
+  state.govFilter = e.target.value;
+  render();
+});
+
+document.getElementById("adminToggle").addEventListener("click", ()=>{
+  state.admin = !state.admin;
+  document.body.classList.toggle("admin", state.admin);
+  document.getElementById("adminToggle").classList.toggle("on", state.admin);
+  document.getElementById("adminBar").style.display = state.admin ? "flex" : "none";
+  if(!state.admin){ selected.clear(); updateBulkBtn(); }
+});
+
+document.getElementById("bulkDelete").addEventListener("click", async ()=>{
+  if(!selected.size) return;
+  if(!confirm(`حذف ${selected.size} تدريب/تدريبات محدّدة؟`)) return;
+  const ids = [...selected];
+  try{
+    await deleteTrainings(ids);
+  }catch(e){
+    alert("تعذّر الحذف، حاولي مجددًا");
+    return;
+  }
+  state.trainings = state.trainings.filter(t=> !selected.has(t.id));
+  selected.clear();
+  updateBulkBtn();
+  render();
+});
+
+/* ---------- Modal: multi-day picker + duration preview ---------- */
+function renderDaysList(){
+  const wrap = document.getElementById("daysList");
+  wrap.innerHTML = formDays.map((d,i)=>`
+    <div class="day-row">
+      <input type="date" class="day-input" data-idx="${i}" value="${d||''}">
+      ${formDays.length>1?`<button type="button" class="remove-day-btn" data-idx="${i}">×</button>`:''}
+    </div>
+  `).join("");
+  wrap.querySelectorAll(".day-input").forEach(inp=>{
+    inp.addEventListener("change", (e)=>{
+      const idx = parseInt(e.target.getAttribute("data-idx"),10);
+      formDays[idx] = e.target.value;
+      updateDurationPreview();
+    });
+  });
+  wrap.querySelectorAll(".remove-day-btn").forEach(btn=>{
+    btn.addEventListener("click", (e)=>{
+      const idx = parseInt(e.target.getAttribute("data-idx"),10);
+      formDays.splice(idx,1);
+      renderDaysList();
+      updateDurationPreview();
+    });
+  });
+}
+
+document.getElementById("addDayBtn").addEventListener("click", ()=>{
+  const last = formDays[formDays.length-1];
+  let next = "";
+  if(last){
+    const dt = new Date(last+"T00:00:00");
+    dt.setDate(dt.getDate()+1);
+    next = `${dt.getFullYear()}-${pad(dt.getMonth()+1)}-${pad(dt.getDate())}`;
+  }
+  formDays.push(next);
+  renderDaysList();
+  updateDurationPreview();
+});
+
+function updateDurationPreview(){
+  const validDays = formDays.filter(Boolean);
+  const start = document.getElementById("fStart").value;
+  const end = document.getElementById("fEnd").value;
+  const el = document.getElementById("durationPreview");
+  if(!validDays.length){ el.textContent = "المدة الإجمالية: — (أضف تاريخًا واحدًا على الأقل)"; return; }
+  el.textContent = "المدة الإجمالية: " + calcDurationText(validDays, start, end);
+}
+
+document.getElementById("fStart").addEventListener("change", updateDurationPreview);
+document.getElementById("fEnd").addEventListener("change", updateDurationPreview);
+
+const modalBg = document.getElementById("modalBg");
+document.getElementById("openAdd").addEventListener("click", ()=>{
+  document.getElementById("fTitle").value="";
+  document.getElementById("fTrainer").value="";
+  document.getElementById("fTrack").value="state";
+  document.getElementById("fGov").value = state.govFilter!=="all" ? state.govFilter : "";
+  document.getElementById("fStart").value="10:00";
+  document.getElementById("fEnd").value="13:00";
+  const defaultDate = state.view==="day"
+    ? `${state.year}-${pad(state.month)}-${pad(state.day)}`
+    : `${state.year}-${pad(state.month)}-01`;
+  formDays = [defaultDate];
+  renderDaysList();
+  updateDurationPreview();
+  modalBg.classList.add("show");
+});
+document.getElementById("cancelAdd").addEventListener("click", ()=> modalBg.classList.remove("show"));
+modalBg.addEventListener("click", (e)=>{ if(e.target===modalBg) modalBg.classList.remove("show"); });
+
+document.getElementById("saveAdd").addEventListener("click", async ()=>{
+  const title = document.getElementById("fTitle").value.trim();
+  const trainer = document.getElementById("fTrainer").value.trim();
+  const track = document.getElementById("fTrack").value;
+  const gov = document.getElementById("fGov").value;
+  const startTime = document.getElementById("fStart").value;
+  const endTime = document.getElementById("fEnd").value;
+  const dates = [...new Set(formDays.filter(Boolean))].sort();
+  if(!title || !dates.length){ alert("الرجاء إدخال عنوان التدريب وتاريخ واحد على الأقل"); return; }
+  const id = "t-"+Date.now()+"-"+Math.floor(Math.random()*1000);
+  const newTraining = {id, track, title, trainer, gov, dates, startTime, endTime};
+  try{
+    await insertTraining(newTraining);
+  }catch(e){
+    alert("تعذّر حفظ التدريب، حاولي مجددًا");
+    return;
+  }
+  state.trainings.push(newTraining);
+  modalBg.classList.remove("show");
+  const d = new Date(dates[0]+"T00:00:00");
+  state.year = d.getFullYear(); state.month = d.getMonth()+1; state.day = d.getDate();
+  render();
+});
+async function init(){
+  await loadAccounts();
+  showAuth();
+}
+init();
+</script>
+</body>
+</html>
